@@ -18,8 +18,9 @@
 
 ## Интерфейс
 
-![Главный экран приложения](/screenshots/screenshot-main.png)
-![Результаты анализа](/screenshots/screenshot-results.png)
+![Главный экран приложения](public/screenshots/screenshot-main.png)
+
+![Результаты анализа](public/screenshots/screenshot-results.png)
 
 ## 🚀 Быстрый старт
 
