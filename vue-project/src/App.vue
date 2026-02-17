@@ -1,123 +1,31 @@
 <template>
   <div class="app">
-    <header class="header">
-      <h1>🤖 AI Code Review Assistant</h1>
-      <p class="subtitle">Get instant feedback on your code from AI assistant</p>
-    </header>
+  <Header />
 
     <main class="main-content">
-      <div class="code-input-section">
-        <h2>📝 Paste Your Code</h2>
-        <div class="input-container">
-          <textarea
-            v-model="codeInput"
-            placeholder="// Paste your code here...
-// Example:
-function calculateSum(a, b) {
-  return a + b;
-}"
-            class="code-textarea"
-            rows="15"
-          ></textarea>
-          <div class="language-selector">
-            <label for="language">Language:</label>
-            <select id="language" v-model="selectedLanguage" class="language-select">
-              <option value="javascript">JavaScript</option>
-              <option value="python">Python</option>
-              <option value="java">Java</option>
-              <option value="typescript">TypeScript</option>
-              <option value="cpp">C++</option>
-            </select>
-          </div>
-        </div>
-        
-        <div class="controls">
-          <button 
-            @click="submitForReview" 
-            :disabled="isLoading || !codeInput.trim()"
-            class="submit-btn"
-          >
-            <span v-if="isLoading">⏳ Processing...</span>
-            <span v-else>🚀 Send for Code Review</span>
-          </button>
-          <button @click="clearAll" class="clear-btn">🗑️ Clear All</button>
-        </div>
-
-        <div class="examples-section">
-          <h3>🔄 Test Examples</h3>
-          <div class="example-buttons">
-            <button @click="loadExample(0)" class="example-btn good">✅ Good Code</button>
-            <button @click="loadExample(1)" class="example-btn bad">⚠️ Bad Code</button>
-            <button @click="loadExample(2)" class="example-btn critical">🔥 Security Issue</button>
-            <button @click="loadExample(3)" class="example-btn warning">🐌 Performance</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="results-section">
-        <h2>📊 Review Results</h2>
-        
-        <div v-if="isLoading" class="loading">
-          <div class="spinner"></div>
-          <p>AI is analyzing your code...</p>
-        </div>
-
-        <div v-else-if="reviewResult" class="review-result">
-          <div class="result-header">
-            <span class="status-badge" :class="reviewResult.status">
-              {{ reviewResult.status === 'good' ? '✅ Good' : '⚠️ Needs Improvement' }}
-            </span>
-            <span class="time">⏱️ {{ reviewResult.responseTime }}ms</span>
-          </div>
-          
-          <div class="score">
-            <div class="score-circle" :style="scoreStyle">
-              {{ reviewResult.score }}/10
-            </div>
-            <p class="score-label">Overall Code Quality</p>
-          </div>
-
-          <div class="feedback-section">
-            <h3>📋 Feedback</h3>
-            <p class="feedback-text">{{ reviewResult.feedback }}</p>
-          </div>
-
-          <div class="suggestions-section" v-if="reviewResult.suggestions.length">
-            <h3>💡 Suggestions</h3>
-            <ul class="suggestions-list">
-              <li v-for="(suggestion, index) in reviewResult.suggestions" :key="index">
-                {{ suggestion }}
-              </li>
-            </ul>
-          </div>
-
-          <div class="issues-section" v-if="reviewResult.issues.length">
-            <h3>⚠️ Issues Found</h3>
-            <ul class="issues-list">
-              <li v-for="(issue, index) in reviewResult.issues" :key="index">
-                <strong>{{ issue.type }}:</strong> {{ issue.message }}
-                <span v-if="issue.line" class="line-info">(Line {{ issue.line }})</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div v-else class="empty-state">
-          <div class="empty-icon">👨‍💻</div>
-          <p>Submit your code to get AI-powered review</p>
-          <p class="hint">Try pasting some code and click "Send for Code Review"</p>
-        </div>
-      </div>
+      <CodeInputSection
+        :code="codeInput"
+        :language="selectedLanguage"
+        :isLoading="isLoading"
+        @update:code="codeInput = $event"
+        @update:language="selectedLanguage = $event"
+        @submit="submitForReview"
+        @clear="clearAll"
+        @loadExample="loadExample"
+      />
+      <ResultsSection :isLoading="isLoading" :reviewResult="reviewResult" />
     </main>
 
-    <footer class="footer">
-      <p>AI Code Review Assistant v1.0 • Mock data simulation</p>
-    </footer>
+  <Footer />
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
+import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
+import CodeInputSection from './components/CodeInputSection.vue'
+import ResultsSection from './components/ResultsSection.vue'
 
 // Reactive state
 const codeInput = ref('')
