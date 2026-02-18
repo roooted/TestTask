@@ -6,6 +6,6 @@ export default defineConfig({
   test: {
     globals: true,        // чтобы использовать describe, it, expect без импорта
     environment: 'jsdom',  // эмуляция браузера для работы с DOM
-    setupFiles: ['./src/test-setup.js'], // (опционально) файл для глобальной настройки
+    // setupFiles: ['./src/test-setup.js'], // (опционально) файл для глобальной настройки
   },
 })
