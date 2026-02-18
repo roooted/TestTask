@@ -12,13 +12,21 @@ export default defineConfig([
   globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
 
   {
-    languageOptions: {
-      globals: {
-        ...globals.browser,
+      languageOptions: {
+        globals: {
+          ...globals.browser,
+          // Vitest testing globals – make them read‑only for ESLint
+          describe: 'readonly',
+          it: 'readonly',
+          test: 'readonly',
+          expect: 'readonly',
+          beforeEach: 'readonly',
+          afterEach: 'readonly',
+        },
       },
-    },
   },
 
   js.configs.recommended,
   ...pluginVue.configs['flat/essential'],
 ])
+

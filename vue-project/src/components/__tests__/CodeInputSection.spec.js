@@ -1,6 +1,8 @@
 // src/components/__tests__/CodeInputSection.spec.js
 import { mount } from '@vue/test-utils'
 import CodeInputSection from '../CodeInputSection.vue'
+// Import Vitest globals explicitly to satisfy ESLint and avoid "describe is not defined"
+// Vitest globals (describe, it, expect) are enabled via vitest.config.js (globals: true)
 
 // Заглушки для дочерних компонентов
 // Stubs for child components used in CodeInputSection tests.
